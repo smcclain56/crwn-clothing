@@ -7,11 +7,19 @@ import cartReducer from './cart/cart.reducer';
 import directoryReducer from './directory/directory.reducer';
 import shopReducer from './shop/shop.reducer';
 
+import { createMigrate } from 'redux-persist';
+import { migrations } from './shop/numberOfChange';
+
+const MIGRATION_DEBUG = false;
+
+
 const persistConfig = {
     key: 'root',
     storage,
-    whiteList: ['cart'] //list of reducers to persist
-}
+    version: 0,
+    migrate: createMigrate(migrations, { debug: MIGRATION_DEBUG }),
+    whiteList: ['cart'], //list of reducers to persist
+};
 
 const rootReducer = combineReducers({
     user: userReducer,
@@ -20,4 +28,7 @@ const rootReducer = combineReducers({
     shop: shopReducer
 });
 
+
+
 export default persistReducer(persistConfig, rootReducer);
+
